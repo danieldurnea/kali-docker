@@ -63,7 +63,7 @@ RUN setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/bin/nmap && \
     git clone https://github.com/wolfcw/libfaketime /tmp/libfaketime && make -C /tmp/libfaketime/src install && rm -rf /tmp/libfaketime
 
 # install python packages
-RUN python3 -m pip install updog name-that-hash search-that-hash && \
+RUN python3 -m pip install updog name-that-hash search-that-hash pwntools && \
     python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git && \
     python3 -m pip install git+https://github.com/calebstewart/paramiko && \
     # python3 -m pip install ciphey --upgrade && \
