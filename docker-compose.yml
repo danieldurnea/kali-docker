@@ -24,6 +24,8 @@ services:
     privileged: true
     hostname: kali-docker
     container_name: kali-docker
+    extra_hosts:
+      - "kali-docker:127.0.0.1"
     environment:
       - DISPLAY
       - FAKETIME="+1h"

@@ -14,7 +14,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     DEBIAN_FRONTEND=noninteractive apt install --yes --no-install-recommends \
     # basic
     man-db software-properties-common wget build-essential git unzip curl atool \
-    file build-essential ssh tree vim unrar rar less fuse \
+    file build-essential ssh tree vim unrar less fuse psmisc \
     # shells
     zsh zsh-autosuggestions zsh-syntax-highlighting bash-completion \
     # programming
@@ -23,7 +23,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     gobuster dirb dirbuster nikto whatweb wkhtmltopdf burpsuite zaproxy ffuf \
     nmap wfuzz finalrecon sqlmap wpscan sslscan smtp-user-enum feroxbuster \
     # cracking / bruteforce
-    hcxtools hashcat hashcat-utils john hydra \
+    hcxtools hashcat hashcat-utils john hydra name-that-hash \
     # binary exploitation
     strace ltrace binwalk ghidra \
     # exploitation
@@ -37,12 +37,12 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     dnsrecon whois dnsutils \
     # windows
     crackmapexec python3-impacket enum4linux passing-the-hash samba smbclient \
-    smbmap responder impacket-scripts bloodhound rlwrap \
+    smbmap responder impacket-scripts bloodhound rlwrap evil-winrm nbtscan \
     # other
     remmina remmina-plugin-rdp  firefox-esr seclists wordlists grc ranger \
     xclip fzf ripgrep cewl jq redis-tools default-mysql-server \
     # TODO check
-    psmisc swaks libssl-dev libffi-dev nbtscan oscanner sipvicious tnscmd10g \
+    swaks libssl-dev libffi-dev sipvicious tnscmd10g \
     onesixtyone && \ 
     # clear apt cache/packages
     apt -y autoclean && apt -y autoremove && apt -y clean
@@ -63,7 +63,7 @@ RUN setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/bin/nmap && \
     git clone https://github.com/wolfcw/libfaketime /tmp/libfaketime && make -C /tmp/libfaketime/src install && rm -rf /tmp/libfaketime
 
 # install python packages
-RUN python3 -m pip install updog name-that-hash search-that-hash pwntools && \
+RUN python3 -m pip install updog search-that-hash pwntools && \
     python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git && \
     python3 -m pip install git+https://github.com/calebstewart/paramiko && \
     # python3 -m pip install ciphey --upgrade && \
@@ -124,13 +124,11 @@ COPY ./default-config/zshrc /home/kali/.zshrc
 RUN mkdir -p /usr/local/bin && \
     wget -O /tmp/rustscan.deb "$(curl -s https://api.github.com/repos/RustScan/RustScan/releases/tags/2.0.1 | jq -r '.assets[].browser_download_url' | grep 'rustscan_.*_amd64')" && apt install /tmp/rustscan.deb && rm /tmp/rustscan.deb && \
     wget -O /tmp/nvim.deb "$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | jq -r '.assets[].browser_download_url' | grep -E 'nvim\-linux64\.deb$')" && apt install /tmp/nvim.deb && rm /tmp/nvim.deb && \
-    # wget -O /tmp/nuclei.zip "$(curl -s https://api.github.com/repos/projectdiscovery/nuclei/releases/latest | jq -r '.assets[].browser_download_url' | grep 'nuclei_.*_linux_amd64')" && unzip /tmp/nuclei.zip -d /usr/local/bin && rm /tmp/nuclei.zip && \
-    wget -O /usr/local/bin/findomain https://github.com/Edu4rdSHL/findomain/releases/latest/download/findomain-linux && chmod +x /usr/local/bin/findomain && \
+    wget -O /tmp/findomain.zip https://github.com/Edu4rdSHL/findomain/releases/latest/download/findomain-linux.zip && unzip /tmp/findomain.zip -d /usr/local/bin && rm /tmp/findomain.zip && chmod +x /usr/local/bin/findomain && \
     wget -O /usr/local/bin/gitdumper.sh https://raw.githubusercontent.com/internetwache/GitTools/master/Dumper/gitdumper.sh && chmod +x /usr/local/bin/gitdumper.sh && \
     wget -O /usr/local/bin/extractor.sh https://raw.githubusercontent.com/internetwache/GitTools/master/Extractor/extractor.sh && chmod +x /usr/local/bin/extractor.sh && \
     wget -O /usr/local/bin/gitfinder.py https://raw.githubusercontent.com/internetwache/GitTools/master/Finder/gitfinder.py && chmod +x /usr/local/bin/gitfinder.py && \
     wget -O /usr/local/bin/enum4linux-ng.py https://raw.githubusercontent.com/cddmp/enum4linux-ng/master/enum4linux-ng.py && chmod +x /usr/local/bin/enum4linux-ng.py && \
-    gem install evil-winrm && \
     npm install -g yarn && \
     git clone https://github.com/pwndbg/pwndbg /home/kali/.pwndbg && cd /home/kali/.pwndbg && /home/kali/.pwndbg/setup.sh && echo "source /home/kali/.pwndbg/gdbinit.py" >> /home/kali/.gdbinit && \
     chown -R kali:kali /home/kali /usr/share/zaproxy && \
@@ -143,3 +141,8 @@ WORKDIR /home/kali
 # https://github.com/noraj/haiti            # hashidentifier
 # Nessus
 # mariadb-client # currently broken
+
+# check version
+# wget -O /tmp/nuclei.zip "$(curl -s https://api.github.com/repos/projectdiscovery/nuclei/releases/latest | jq -r '.assets[].browser_download_url' | grep 'nuclei_.*_linux_amd64')" && unzip /tmp/nuclei.zip -d /usr/local/bin && rm /tmp/nuclei.zip && \
+# gem install evil-winrm && \
+# RUN python3 -m pip install name-that-hash && \
