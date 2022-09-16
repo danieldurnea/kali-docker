@@ -19,6 +19,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     zsh zsh-autosuggestions zsh-syntax-highlighting bash-completion \
     # programming
     python3 python3-pip python2 cargo python3-dev python3-venv default-jdk npm golang shfmt shellcheck python3-virtualenv \
+    python-is-python3 \
     # recon / web
     gobuster dirb dirbuster nikto whatweb wkhtmltopdf burpsuite zaproxy ffuf \
     nmap wfuzz finalrecon sqlmap wpscan sslscan smtp-user-enum feroxbuster \
@@ -63,7 +64,7 @@ RUN setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/bin/nmap && \
     git clone https://github.com/wolfcw/libfaketime /tmp/libfaketime && make -C /tmp/libfaketime/src install && rm -rf /tmp/libfaketime
 
 # install python packages
-RUN python3 -m pip install updog search-that-hash pwntools && \
+RUN python3 -m pip install updog search-that-hash pwntools pyftpdlib && \
     python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git && \
     python3 -m pip install git+https://github.com/calebstewart/paramiko && \
     # python3 -m pip install ciphey --upgrade && \

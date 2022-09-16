@@ -2,7 +2,6 @@
 alias burpsuite="burpsuite &"
 alias ff="firefox > /dev/null 2> /dev/null &"
 alias zaproxy="zaproxy > /dev/null 2> /dev/null &"
-alias spo="searchsploit"
 alias eeh="sudoedit /etc/hosts" # Edit /Etc/Host
 alias genssh="ssh-keygen -f id_rsa -P ''"
 alias sco="cat $HOME/.config/commands.txt" # Search COmmands
@@ -10,10 +9,14 @@ alias e="nvim"
 alias f="ranger"
 alias history="history 0"
 alias ls="lsd"
-alias lsa="ls -la"
+alias lsa="ls -lah"
 alias md="mkdir -p"
 alias aff="jq -r '.results[] | [.status, .url, .resultfile] | @tsv' ./summary.json" # Analyse FFuf
 alias rrm="rm -r"
+alias cssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+alias ghi="/opt/repos/hacking-handbook/helper/ghidra.py --temp"
+alias ftpserver="/opt/repos/hacking-handbook/helper/ftpserver.sh"
+alias share="/opt/repos/hacking-handbook/helper/webserver.py"
 
 # Edit COmmand
 eco() {
@@ -93,6 +96,7 @@ dcu() {
       echo "wget http://$address:$port/$f -outputfile $file_name"
       echo "Invoke-WebRequest -Uri http://$address:$port/$f -OutFile '$file_name'"
       echo "Copy-Item -Source \\\\$address\\kali\\$f -Destination '$file_name'"
+      echo "copy \\\\$address\\kali\\$f $file_name"
     fi
     if [ "$1" = "lin" ]; then
       echo "wget \"http://$address:$port/$f\""
@@ -146,7 +150,7 @@ pst() {
   echo "Executing the following command and copied to clipboard:"
   echo "mkdir -p nmap-$1 && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA nmap-$1/fullscan-tcp"
   echo "mkdir -p nmap-$1 && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA nmap-$1/fullscan-tcp" | xclip -selection clipboard
-  mkdir -p nmap-$1 && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA nmap-$1/fullscan-tcp
+  mkdir -p "nmap-$1" && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA "nmap-$1/fullscan-tcp"
 }
 
 # Port Scan Udp
@@ -155,7 +159,7 @@ psu() {
   echo "Executing the following command and copied to clipboard:"
   echo "mkdir -p nmap-$1 && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 "$r1" -oA nmap-$rhost/top1000-udp"
   echo "mkdir -p nmap-$1 && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 "$r1" -oA nmap-$rhost/top1000-udp" | xclip -selection clipboard
-  mkdir -p nmap-$1 && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 -oA nmap-$rhost/top1000-udp "$1"
+  mkdir -p "nmap-$1" && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 -oA "nmap-$rhost/top1000-udp" "$1"
 }
 
 # NIKto
@@ -164,7 +168,7 @@ nik() {
   echo "Executing and copied to clipboard:"
   echo "nikto -ask=no -h "$1://$2:$3" | tee nikto-$1-$2-$3.txt"
   echo "nikto -ask=no -h "$1://$2:$3" | tee nikto-$1-$2-$3.txt" | xclip -selection clipboard
-  nikto -ask=no -h "$1://$2:$3" | tee nikto-$1-$2-$3.txt
+  nikto -ask=no -h "$1://$2:$3" | tee "nikto-$1-$2-$3.txt"
 }
 
 # Set RHost
@@ -203,6 +207,19 @@ ffv() {
   ffuf -c -u "${proto}://${ressource}:${port}" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o "'$ffuf_out/summary.json'" -od "$ffuf_out" -H "Host: FUZZ.${ressource}" -fs ${filter_size} $@
 }
 
+# FFuf Request file
+ffr() {
+  [ "$2" = "" ] && echo "Usage: ffw <http/https> <request-file> [other ffuf params]" && return
+  proto="$1"
+  request_file="$2"
+  shift; shift;
+  ffuf_out="ffuf-${proto}-${request_file}"
+  echo "Executing and copied to clipboard:"
+  echo "ffuf -c -u -request \"${request_file}\" -request-proto \"${proto}\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@"
+  echo "ffuf -c -u -request \"${request_file}\" -request-proto \"${proto}\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@" | xclip
+  ffuf -c -u -request "${request_file}" -request-proto "${proto}" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o "'$ffuf_out/summary.json'" -od "'$ffuf_out'" -mc '200,204,301,302,307,401,405,403' -H "Host: ${ressource}" $@
+}
+
 vnc_start() {
   echo "Starting vnc"
   (x11vnc -nopw -N -forever -env FD_PROG=startxfce4 -create \
@@ -216,11 +233,6 @@ vnc_stop() {
   echo "Stopping vnc"
   (pkill websockify > /dev/null 2>&1)
   (pkill x11vnc > /dev/null 2>&1)
-}
-
-share() {
-  #ip -4 -o addr | awk '{print sprintf("%s %s", $2, $4)}' && updog -d "$PWD"
-  ip -4 -o addr | awk '{print sprintf("%s %s", $2, $4)}' && python3 -m http.server -d "$PWD"
 }
 
 # Encode URl
@@ -274,7 +286,7 @@ smbserver() {
   echo "Starting SMB Server on $port..."
   echo "No authentication is needed and share name is 'kali'"
   echo "If no authentication is blocked, use ssmbserver"
-  sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py -smb2support -password '' kali "$PWD"
+  sudo impacket-smbserver -smb2support -password '' kali "$PWD"
 }
 
 ssmbserver() {
@@ -285,7 +297,7 @@ ssmbserver() {
   echo "Authenticate with this credentials: user:pass"
   echo "Share name is 'kali'"
   echo "Example usage: net use z: \\\\\\$ip\kali /user:user pass"
-  sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py -smb2support -username user -password 'pass' kali "$PWD"
+  sudo impacket-smbserver -smb2support -username user -password 'pass' kali "$PWD"
 }
 
 # Search Hacking Book
@@ -329,7 +341,7 @@ chi() {
 pve() {
   [ "$1" = "" ] && echo "Usage: pve <virtual env name>" && return
   python3 -m venv "$1"
-  source "$1/bin/activate"
+  . "$1/bin/activate"
   echo 'Run "deactivate" to exit virtual env'
 }
 
@@ -392,6 +404,7 @@ enumsmb() {
 	echo "crackmapexec smb \"$1\" -u pot-user.txt -p pot-passwords.txt --continue-on-success"
 }
 
+# BloodHound
 bh() {
 	echo "Setting neo4j credentials to: neo4j:pass"
 	sudo /usr/share/neo4j/bin/neo4j-admin set-initial-password pass >/dev/null 2>/dev/null && sudo neo4j console >/dev/null &
@@ -403,4 +416,13 @@ bh() {
 	echo "Stopping neo4j..."
 	sudo kill "$(pgrep -f -n -i 'neo4j')"
 	echo "Done stopping neo4j!"
+}
+
+# SearchsPloit
+sp() {
+  selected="$(searchsploit -o --color "$*" | fzf --tac)"
+  file_name="$(echo "$selected" | awk -F '/' '{print $NF}')"
+  ebdid="$(echo "$file_name" | cut -d '.' -f1)"
+  [ "$ebdid" = "" ] && return 1
+  searchsploit -m "$ebdid"
 }

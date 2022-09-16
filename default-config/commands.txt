@@ -1,43 +1,47 @@
-burpsuite
-ff
-zaproxy
-vnc_start
-vnc_stop
-share # start python webserver
-eur # url encode
-dur # url decode
-genssh # generate ssh keys
-interfaceip # get main interface ip
-eeh # edit /etc/hosts
-spo # searchsploit
-ncl # netcat listen
-phpwebsh # print php webshell
-bashrev # print bash reverse shell
-pst # tcp rustscan
-psu # udp rustscan
-nik # nikto scan
-srh # export rhost
-ffw # default web discovery
-ffv # default vhost discovery
-dcu # generate download command for files in current dir
-dcus # generate download command for files in current dir and filter with fzf
-cef # copy external files
-eco # read string vom stdin; edit in $EDITOR; run 
-ehi # edit command from history and run
-sco # show this list
-lsa # long listing
-md # mkdir with parent
-rrm # rm recursively
-f # open ranger
-e # open lvim
-update_repos # update repos in /opt/repos
-update_external_tools # update external tools in /opt/external
-shb # search in hacking handbook
-smbserver # start impacket smbserver
-ssmbserver # start secure (password) impacket smbserver
-aff # analyse summary.json in current dir
-chi # start chisel connection
-pve # create and switch to python virtual env
-crh # crack hash
-enumsmb # enumerate smb server
-bh # start neo4j and bloodhound
+aff                      # analyse summary.json in current dir
+bashrev                  # print bash reverse shell
+bh                       # start neo4j and bloodhound
+burpsuite               
+cef                      # copy external files
+chi                      # start chisel connection
+crh                      # crack hash
+cssh                     # no host checking
+dcu                      # generate download command for files in current dir
+dcus                     # generate download command for files in current dir and filter with fzf
+dur                      # url decode
+e                        # open nvim
+eco                      # read string vom stdin; edit in $EDITOR; run 
+eeh                      # edit /etc/hosts
+ehi                      # edit command from history and run
+enumsmb                  # enumerate smb server
+eur                      # url encode
+f                        # open ranger
+ff                       # open firefox
+ffr                      # ffuf with request file
+ffv                      # default vhost discovery
+ffw                      # default web discovery
+ftpserver                # python ftpserver
+genssh                   # generate ssh keys
+ghi                      # analyse binary in background with ghidra
+interfaceip              # get main interface ip
+lsa                      # long listing
+md                       # mkdir with parent
+ncl                      # netcat listen
+nik                      # nikto scan
+phpwebsh                 # print php webshell
+pst                      # tcp rustscan
+psu                      # udp rustscan
+pve                      # create and switch to python virtual env
+rrm                      # rm recursively
+sco                      # show this list
+share                    # start python webserver
+shb                      # search in hacking handbook
+smbserver                # start impacket smbserver
+sp                       # searchsploit with fzf
+srh                      # export rhost
+ssmbserver               # start secure (password) impacket smbserver
+update_external_tools    # update external tools in /opt/external
+update_repos             # update repos in /opt/repos
+vnc_start               
+vnc_stop                
+zaproxy                  # open zaproxy
