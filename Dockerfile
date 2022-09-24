@@ -14,7 +14,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     DEBIAN_FRONTEND=noninteractive apt install --yes --no-install-recommends \
     # basic
     man-db software-properties-common wget build-essential git unzip curl atool \
-    file build-essential ssh tree vim unrar less fuse psmisc \
+    file build-essential ssh tree vim unrar less fuse psmisc htop \
     # shells
     zsh zsh-autosuggestions zsh-syntax-highlighting bash-completion \
     # programming
