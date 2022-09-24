@@ -16,11 +16,11 @@ stop_docker_service() {
 }
 
 start_docker_container() {
-    docker-compose --no-recreate -f "$(dirname "$0")/docker-compose.override.yml" -f "$(dirname "$0")/docker-compose.yml" up -d
+    docker-compose -f "$(dirname "$0")/docker-compose.override.yml" -f "$(dirname "$0")/docker-compose.yml" up -d --no-recreate 
 }
 
 open_shell() {
-    docker-compose --no-recreate -f "$(dirname "$0")/docker-compose.override.yml" -f "$(dirname "$0")/docker-compose.yml" exec kali /start.sh "$1"
+    docker-compose -f "$(dirname "$0")/docker-compose.override.yml" -f "$(dirname "$0")/docker-compose.yml" exec kali /start.sh "$1"
 }
 
 case "$1" in
