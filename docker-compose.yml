@@ -18,6 +18,8 @@ services:
       - ./default-config/files.txt:/home/kali/.config/files.txt:ro
       - ./default-config/commands.txt:/home/kali/.config/commands.txt:ro
       - ./default-config/repos.txt:/home/kali/.config/repos.txt:ro
+      - ./default-config/ollinux.txt:/home/kali/.config/ollinux.txt:ro
+      - ./default-config/olwin.txt:/home/kali/.config/olwin.txt:ro
       # Put your rc in /etc/zsh/zshrc.d to source them automaticly; see override file
     tty: true
     stdin_open: true

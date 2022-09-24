@@ -26,9 +26,12 @@ ghi                      # analyse binary in background with ghidra
 interfaceip              # get main interface ip
 lsa                      # long listing
 md                       # mkdir with parent
+msfc                     # start msfconsole with postgres
 ncl                      # netcat listen
 nik                      # nikto scan
 phpwebsh                 # print php webshell
+pel                      # print linux commands for enumeration
+pew                      # print windows commands for enumeration
 pst                      # tcp rustscan
 psu                      # udp rustscan
 pve                      # create and switch to python virtual env

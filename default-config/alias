@@ -17,6 +17,8 @@ alias cssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 alias ghi="/opt/repos/hacking-handbook/helper/ghidra.py --temp"
 alias ftpserver="/opt/repos/hacking-handbook/helper/ftpserver.sh"
 alias share="/opt/repos/hacking-handbook/helper/webserver.py"
+alias pel="cat $HOME/.config/ollinux.txt"
+alias pew="cat $HOME/.config/olwin.txt"
 
 # Edit COmmand
 eco() {
@@ -32,7 +34,7 @@ eco() {
 
 # Edit HIstory
 ehi() {
-  sel="$(history 0 | sort -r | fzf | awk '{ print $1 }')"
+  sel="$(history | fzf | awk '{ print $1 }')"
   [ "$sel" = "" ] && echo "Nothing selected." && return
   fc "$sel"
 }
@@ -80,7 +82,7 @@ getopenport() {
 
 # Download from CUrrent dir
 dcu() {
-  [ "$1" = "" ] && echo "Usage: dcu <win/lin> <port>" && return
+  [ "$1" = "" ] && echo "Usage: dcu <win/lin> [<port> (defaule 8000)]" && return
   port="8000"
   [ "$2" != "" ] && port="$2"
   address="$(interfaceip)"
@@ -112,9 +114,11 @@ dcu() {
 
 # Download from CUrrent dir with Selection
 dcus() {
-  plattform="$(echo 'win\nlin' | fzf --prompt="Select plattform")"
-  [ "$plattform" = "" ] && echo "Please specify Plattform." && return
-  sel="$(dcu "$plattform" "$1" | fzf)"
+  [ "$1" = "" ] && echo "Usage: dcus <win/lin> [<port> (defaule 8000)]" && return
+  port="8000"
+  [ "$2" != "" ] && port="$2"
+  sel="$(dcu "$1" "$port" | fzf)"
+  [ "$sel" = "" ] && echo "Nothing selected." && return
   echo "Selected and copied to clipboard:"
   echo "$sel"
   echo "$sel" | xclip -selection clipboard
@@ -148,17 +152,20 @@ bashrev() {
 pst() {
   [ "$1" = "" ] && echo "Usage: pst <ip>" && return
   echo "Executing the following command and copied to clipboard:"
-  echo "mkdir -p nmap-$1 && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA nmap-$1/fullscan-tcp"
-  echo "mkdir -p nmap-$1 && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA nmap-$1/fullscan-tcp" | xclip -selection clipboard
-  mkdir -p "nmap-$1" && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA "nmap-$1/fullscan-tcp"
+  echo "mkdir -p \"nmap-$1\" && nmap -p- -v -Pn -A -sC -sV --osscan-guess --version-all -oA \"nmap-$1/fullscan-tcp\" \"$1\""
+  echo "mkdir -p \"nmap-$1\" && nmap -p- -v -Pn -A -sC -sV --osscan-guess --version-all -oA \"nmap-$1/fullscan-tcp\" \"$1\"" 
+  mkdir -p "nmap-$1" && nmap -p- -v -Pn -A -sC -sV -sS --osscan-guess --version-all -oA "nmap-$1/fullscan-tcp" "$1"
+  #echo "mkdir -p nmap-$1 && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA nmap-$1/fullscan-tcp"
+  #echo "mkdir -p nmap-$1 && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA nmap-$1/fullscan-tcp" | xclip -selection clipboard
+  #mkdir -p "nmap-$1" && rustscan -a "$1" -- -A -sC -sV -sS -sU --osscan-guess --version-all -oA "nmap-$1/fullscan-tcp"
 }
 
 # Port Scan Udp
 psu() {
   [ "$1" = "" ] && echo "Usage: psu <ip>" && return
   echo "Executing the following command and copied to clipboard:"
-  echo "mkdir -p nmap-$1 && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 "$r1" -oA nmap-$rhost/top1000-udp"
-  echo "mkdir -p nmap-$1 && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 "$r1" -oA nmap-$rhost/top1000-udp" | xclip -selection clipboard
+  echo "mkdir -p nmap-$1 && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 -oA nmap-$rhost/top1000-udp $1"
+  echo "mkdir -p nmap-$1 && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 -oA nmap-$rhost/top1000-udp $1" | xclip -selection clipboard
   mkdir -p "nmap-$1" && nmap -v -Pn -sU --max-retries 1 --max-scan-delay 1 --version-intensity 0 -oA "nmap-$rhost/top1000-udp" "$1"
 }
 
@@ -179,21 +186,21 @@ srh() {
 
 # FFuf Web bruteforce
 ffw() {
-  [ "$3" = "" ] && echo "Usage: ffw <http/https> <domain/ip> <port/dir> [other ffuf params]" && return
+  [ "$3" = "" ] && echo "Usage: ffw <http/https> <domain/ip> <:port/dir> [other ffuf params]" && return
   proto="$1"
   ressource="$2"
   port="$3"
   shift; shift; shift;
   ffuf_out="ffuf-${proto}-${ressource}-${port}"
   echo "Executing and copied to clipboard:"
-  echo "ffuf -c -u \"${proto}://${ressource}:${port}/FUZZ\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@"
-  echo "ffuf -c -u \"${proto}://${ressource}:${port}/FUZZ\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@" | xclip -selection clipboard 
-  ffuf -c -u "${proto}://${ressource}:${port}/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o "$ffuf_out/summary.json" -recursion -e '.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od "$ffuf_out" -mc '200,204,301,302,307,401,405,403' -H "Host: ${ressource}" $@
+  echo "ffuf -c -u \"${proto}://${ressource}${port}/FUZZ\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '/,.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@"
+  echo "ffuf -c -u \"${proto}://${ressource}${port}/FUZZ\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '/,.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@" | xclip -selection clipboard 
+  ffuf -c -u "${proto}://${ressource}${port}/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o "$ffuf_out/summary.json" -recursion -e '/,.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od "$ffuf_out" -mc '200,204,301,302,307,401,405,403' -H "Host: ${ressource}" $@
 }
 
 # FFuf Vhost bruteforce
 ffv() {
-  [ "$3" = "" ] && echo "Usage: ffv <http/https> <domain> <port/dir> <filter_size> [other ffuf params]" && return
+  [ "$3" = "" ] && echo "Usage: ffv <http/https> <domain> <:port/dir> <filter_size> [other ffuf params]" && return
   [ "$4" = "" ] && 4="99999999"
   proto="$1"
   ressource="$2"
@@ -202,9 +209,9 @@ ffv() {
   shift; shift; shift; shift;
   ffuf_out="ffuf-vhost-${proto}-${ressource}-${port}"
   echo "Executing and copied to clipboard:"
-  echo "ffuf -c -u \"${proto}://${ressource}:${port}\" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o '$ffuf_out/summary.json' -od '$ffuf_out' -H \"Host: FUZZ.${ressource}\" -fs ${filter_size} $@"
-  echo "ffuf -c -u \"${proto}://${ressource}:${port}\" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o '$ffuf_out/summary.json' -od '$ffuf_out' -H \"Host: FUZZ.${ressource}\" -fs ${filter_size} $@" | xclip -selection clipboard
-  ffuf -c -u "${proto}://${ressource}:${port}" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o "'$ffuf_out/summary.json'" -od "$ffuf_out" -H "Host: FUZZ.${ressource}" -fs ${filter_size} $@
+  echo "ffuf -c -u \"${proto}://${ressource}${port}\" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o '$ffuf_out/summary.json' -od '$ffuf_out' -H \"Host: FUZZ.${ressource}\" -fs ${filter_size} $@"
+  echo "ffuf -c -u \"${proto}://${ressource}${port}\" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o '$ffuf_out/summary.json' -od '$ffuf_out' -H \"Host: FUZZ.${ressource}\" -fs ${filter_size} $@" | xclip -selection clipboard
+  ffuf -c -u "${proto}://${ressource}${port}" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o "'$ffuf_out/summary.json'" -od "$ffuf_out" -H "Host: FUZZ.${ressource}" -fs ${filter_size} $@
 }
 
 # FFuf Request file
@@ -215,9 +222,23 @@ ffr() {
   shift; shift;
   ffuf_out="ffuf-${proto}-${request_file}"
   echo "Executing and copied to clipboard:"
-  echo "ffuf -c -u -request \"${request_file}\" -request-proto \"${proto}\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@"
-  echo "ffuf -c -u -request \"${request_file}\" -request-proto \"${proto}\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@" | xclip
-  ffuf -c -u -request "${request_file}" -request-proto "${proto}" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o "'$ffuf_out/summary.json'" -od "'$ffuf_out'" -mc '200,204,301,302,307,401,405,403' -H "Host: ${ressource}" $@
+  echo "ffuf -c -u -request \"${request_file}\" -request-proto \"${proto}\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '/,.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@"
+  echo "ffuf -c -u -request \"${request_file}\" -request-proto \"${proto}\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -recursion -e '/,.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@" | xclip
+  ffuf -c -u -request "${request_file}" -request-proto "${proto}" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o "'$ffuf_out/summary.json'" -recursion -e '/,.htm,.py,.sh,.php,.txt,.md,.html,.asp,.aspx,.jsp' -od "'$ffuf_out'" -mc '200,204,301,302,307,401,405,403' -H "Host: ${ressource}" $@
+}
+
+# FFuf Directory
+ffd() {
+  [ "$3" = "" ] && echo "Usage: ffw <http/https> <domain/ip> <:port/dir> [other ffuf params]" && return
+  proto="$1"
+  ressource="$2"
+  port="$3"
+  shift; shift; shift;
+  ffuf_out="ffuf-${proto}-${ressource}-${port}"
+  echo "Executing and copied to clipboard:"
+  echo "ffuf -c -u \"${proto}://${ressource}${port}/FUZZ\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -e '/' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@"
+  echo "ffuf -c -u \"${proto}://${ressource}${port}/FUZZ\" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o '$ffuf_out/summary.json' -e '/' -od '$ffuf_out' -mc '200,204,301,302,307,401,405,403' -H \"Host: ${ressource}\" $@" | xclip -selection clipboard 
+  ffuf -c -u "${proto}://${ressource}${port}/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/raft-small-words-lowercase.txt -o "$ffuf_out/summary.json" -e '/' -od "$ffuf_out" -mc '200,204,301,302,307,401,405,403' -H "Host: ${ressource}" $@
 }
 
 vnc_start() {
@@ -425,4 +446,12 @@ sp() {
   ebdid="$(echo "$file_name" | cut -d '.' -f1)"
   [ "$ebdid" = "" ] && return 1
   searchsploit -m "$ebdid"
+}
+
+# MSFConsole
+msfc() {
+  if ! sudo service postgresql status | grep -oq online; then 
+    sudo service postgresql start
+  fi
+  msfconsole -q
 }
