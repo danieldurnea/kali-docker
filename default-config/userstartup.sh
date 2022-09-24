@@ -9,6 +9,11 @@ if [ ! -d "$HOME/.config/nvim" ]; then
   echo "vim.opt.relativenumber = true" > ~/.config/nvim/lua/custom/init.lua
 fi
 
+
+if [ ! -d "$HOME/hack/history" ]; then
+  mkdir -p "$HOME/hack/history"
+fi
+
 # lunarvim
 #export PATH=~/.npm-global/bin:$PATH
 #if [ ! -d "$HOME/.config/lvim" ]; then
