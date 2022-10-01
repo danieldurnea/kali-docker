@@ -31,7 +31,6 @@ The follow features were added over time:
 - popular hacking tools (from packet manager and github)
 - function/alias to help and speed up daily hacking tasks
 - easier integration for configuration files of your linux daily driver
-- example configuration files
 
 ## Docker
 
@@ -80,3 +79,9 @@ clean:   Stop and remove kali containers
 ## How to Add Apps
 
 Once in the Kali shell you can add them as you normally would with `apt install ...`, but if you want the apps already in place upon rebuild you can edit the Dockerfile to include whatever app you'd like.
+
+## Configuration files
+
+If you need some ideas on how to customize this docker container have a look at my [hacking-handbook](https://github.com/braunbearded/hacking-handbook).
+It not only includes documentation for often used programs in hacking but also some nice aliases and functions to speed stuff up.
+See docker-compose.override.yml to integrate [hacking-handbook](https://github.com/braunbearded/hacking-handbook) in this container.
