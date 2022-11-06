@@ -115,7 +115,11 @@ RUN mkdir -p /opt/external && \
     wget -O /opt/external/SharpWeb.exe "$(curl -s https://api.github.com/repos/djhohnstein/SharpWeb/releases/latest | jq -r '.assets[].browser_download_url' | grep '.*.exe')" && \
     mkdir -p /opt/external/SharpCollection && git clone https://github.com/Flangvik/SharpCollection /opt/external/SharpCollection && \
     wget -O /opt/external/PrivescCheck.ps1 https://raw.githubusercontent.com/itm4n/PrivescCheck/master/PrivescCheck.ps1 && \
-    wget -O /opt/external/SharpHound.exe https://github.com/BloodHoundAD/BloodHound/raw/master/Collectors/SharpHound.exe
+    wget -O /opt/external/SharpHound.exe https://github.com/BloodHoundAD/BloodHound/raw/master/Collectors/SharpHound.exe && \
+    wget -O /opt/external/JuicyPotato.exe https://github.com/ohpe/juicy-potato/releases/download/v0.1/JuicyPotato.exe && \
+    wget -O /opt/external/nmap-setup.exe https://nmap.org"$(curl --silent https://nmap.org/dist/ | grep "installer for Windows" | cut -d '"' -f 4)" && \
+    wget -O /opt/external/putty32.exe https://the.earth.li/~sgtatham/putty/latest/w32/putty.exe && \
+    wget -O /opt/external/putty64.exe https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe
 
 # other tools
 RUN mkdir -p /usr/local/bin && \
