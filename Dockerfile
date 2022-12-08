@@ -18,7 +18,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     # shells
     zsh zsh-autosuggestions zsh-syntax-highlighting bash-completion \
     # programming
-    python3 python3-pip python2 cargo python3-dev python3-venv default-jdk npm golang shfmt shellcheck python3-virtualenv \
+    python3 python3-pip python2 cargo python3-dev default-jdk npm golang shfmt shellcheck \
     python-is-python3 \
     # recon / web
     gobuster dirb dirbuster nikto whatweb wkhtmltopdf burpsuite zaproxy ffuf \
@@ -38,7 +38,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     dnsrecon whois dnsutils \
     # windows
     crackmapexec python3-impacket enum4linux passing-the-hash samba smbclient \
-    smbmap responder impacket-scripts bloodhound rlwrap evil-winrm nbtscan \
+    smbmap responder impacket-scripts bloodhound rlwrap evil-winrm nbtscan windows-binaries \
     # other
     remmina remmina-plugin-rdp  firefox-esr seclists wordlists grc ranger \
     xclip fzf ripgrep cewl jq redis-tools default-mysql-server \
@@ -64,11 +64,12 @@ RUN setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/bin/nmap && \
     git clone https://github.com/wolfcw/libfaketime /tmp/libfaketime && make -C /tmp/libfaketime/src install && rm -rf /tmp/libfaketime
 
 # install python packages
-RUN python3 -m pip install updog search-that-hash pwntools pyftpdlib && \
+RUN python3 -m pip install updog search-that-hash pwntools pyftpdlib virtualenv && \
     python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git && \
     python3 -m pip install git+https://github.com/calebstewart/paramiko && \
     # python3 -m pip install ciphey --upgrade && \
-    wget -O /tmp/get-pip.py "https://bootstrap.pypa.io/pip/2.7/get-pip.py" && python2 /tmp/get-pip.py && rm /tmp/get-pip.py
+    wget -O /tmp/get-pip.py "https://bootstrap.pypa.io/pip/2.7/get-pip.py" && python2 /tmp/get-pip.py && rm /tmp/get-pip.py && \
+    python3 -m pip install -U pyopenssl
 
 # clone usefull repos
 RUN mkdir -p /opt/repos && \
@@ -130,6 +131,7 @@ RUN mkdir -p /usr/local/bin && \
     wget -O /usr/local/bin/extractor.sh https://raw.githubusercontent.com/internetwache/GitTools/master/Extractor/extractor.sh && chmod +x /usr/local/bin/extractor.sh && \
     wget -O /usr/local/bin/gitfinder.py https://raw.githubusercontent.com/internetwache/GitTools/master/Finder/gitfinder.py && chmod +x /usr/local/bin/gitfinder.py && \
     wget -O /usr/local/bin/enum4linux-ng.py https://raw.githubusercontent.com/cddmp/enum4linux-ng/master/enum4linux-ng.py && chmod +x /usr/local/bin/enum4linux-ng.py && \
+    wget -O /usr/local/bin/kerbrute "$(curl -s https://api.github.com/repos/ropnop/kerbrute/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux_amd64')" && chmod +x /usr/local/bin/kerbrute && \
     npm install -g yarn && \
     git clone https://github.com/pwndbg/pwndbg /home/kali/.pwndbg && cd /home/kali/.pwndbg && /home/kali/.pwndbg/setup.sh && echo "source /home/kali/.pwndbg/gdbinit.py" >> /home/kali/.gdbinit && \
     chown -R kali:kali /home/kali /usr/share/zaproxy && \
