@@ -40,7 +40,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     crackmapexec python3-impacket enum4linux passing-the-hash samba smbclient \
     smbmap responder impacket-scripts bloodhound rlwrap evil-winrm nbtscan windows-binaries \
     # other
-    remmina remmina-plugin-rdp  firefox-esr seclists wordlists grc ranger \
+    remmina remmina-plugin-rdp remmina-plugin-vnc firefox-esr seclists wordlists grc ranger \
     xclip fzf ripgrep cewl jq redis-tools default-mysql-server \
     # TODO check
     swaks libssl-dev libffi-dev sipvicious tnscmd10g \
@@ -120,7 +120,8 @@ RUN mkdir -p /opt/external && \
     wget -O /opt/external/JuicyPotato.exe https://github.com/ohpe/juicy-potato/releases/download/v0.1/JuicyPotato.exe && \
     wget -O /opt/external/nmap-setup.exe https://nmap.org"$(curl --silent https://nmap.org/dist/ | grep "installer for Windows" | cut -d '"' -f 4)" && \
     wget -O /opt/external/putty32.exe https://the.earth.li/~sgtatham/putty/latest/w32/putty.exe && \
-    wget -O /opt/external/putty64.exe https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe
+    wget -O /opt/external/putty64.exe https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe && \
+    git clone https://github.com/expl0itabl3/Toolies /opt/external/Toolies
 
 # other tools
 RUN mkdir -p /usr/local/bin && \
