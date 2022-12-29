@@ -43,7 +43,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     remmina remmina-plugin-rdp remmina-plugin-vnc firefox-esr seclists wordlists grc ranger \
     xclip fzf ripgrep cewl jq redis-tools default-mysql-server \
     # TODO check
-    swaks libssl-dev libffi-dev sipvicious tnscmd10g \
+    swaks libssl-dev libffi-dev tnscmd10g \
     onesixtyone && \ 
     # clear apt cache/packages
     apt -y autoclean && apt -y autoremove && apt -y clean
