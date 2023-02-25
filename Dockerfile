@@ -18,7 +18,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     # shells
     zsh zsh-autosuggestions zsh-syntax-highlighting bash-completion \
     # programming
-    python3 python3-pip python2 cargo python3-dev default-jdk npm golang shfmt shellcheck \
+    python3 python3-pip python2 cargo python3-dev default-jdk npm golang shfmt shellcheck php \
     python-is-python3 \
     # recon / web
     gobuster dirb dirbuster nikto whatweb wkhtmltopdf burpsuite zaproxy ffuf \
@@ -41,7 +41,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     smbmap responder impacket-scripts bloodhound rlwrap evil-winrm nbtscan windows-binaries \
     # other
     remmina remmina-plugin-rdp remmina-plugin-vnc firefox-esr seclists wordlists grc ranger \
-    xclip fzf ripgrep cewl jq redis-tools default-mysql-server \
+    xclip fzf ripgrep cewl jq redis-tools default-mysql-server freerdp2-x11 okular \
     # TODO check
     swaks libssl-dev libffi-dev tnscmd10g \
     onesixtyone && \ 
@@ -49,7 +49,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     apt -y autoclean && apt -y autoremove && apt -y clean
 
     # General
-RUN setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/bin/nmap && \
+RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/nmap && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen && \
     # setup metasploit database
     service postgresql start && msfdb init && \
@@ -121,7 +121,9 @@ RUN mkdir -p /opt/external && \
     wget -O /opt/external/nmap-setup.exe https://nmap.org"$(curl --silent https://nmap.org/dist/ | grep "installer for Windows" | cut -d '"' -f 4)" && \
     wget -O /opt/external/putty32.exe https://the.earth.li/~sgtatham/putty/latest/w32/putty.exe && \
     wget -O /opt/external/putty64.exe https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe && \
-    git clone https://github.com/expl0itabl3/Toolies /opt/external/Toolies
+    git clone https://github.com/expl0itabl3/Toolies /opt/external/Toolies && \
+    wget -O /opt/external/PrintSpoofer32.exe "$(curl -s https://api.github.com/repos/itm4n/PrintSpoofer/releases/latest | jq -r '.assets[].browser_download_url' | grep 'PrintSpoofer32.exe')" && \
+    wget -O /opt/external/PrintSpoofer64.exe "$(curl -s https://api.github.com/repos/itm4n/PrintSpoofer/releases/latest | jq -r '.assets[].browser_download_url' | grep 'PrintSpoofer64.exe')" 
 
 # other tools
 RUN mkdir -p /usr/local/bin && \
