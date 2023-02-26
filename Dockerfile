@@ -134,7 +134,7 @@ RUN mkdir -p /opt/external && \
 # other tools
 RUN mkdir -p /usr/local/bin && \
     wget -O /tmp/rustscan.deb "$(curl -s https://api.github.com/repos/RustScan/RustScan/releases/tags/2.0.1 | jq -r '.assets[].browser_download_url' | grep 'rustscan_.*_amd64')" && apt install /tmp/rustscan.deb && rm /tmp/rustscan.deb && \
-    wget -O /tmp/nvim.deb "$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | jq -r '.assets[].browser_download_url' | grep -E 'nvim\-linux64\.deb$')" && apt install /tmp/nvim.deb && rm /tmp/nvim.deb && \
+    wget -O /tmp/nvim.deb "$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | jq -r '.assets[].browser_download_url' | grep -E 'nvim-linux64.deb$')" && apt install /tmp/nvim.deb && rm /tmp/nvim.deb && \
     wget -O /tmp/findomain.zip https://github.com/Edu4rdSHL/findomain/releases/latest/download/findomain-linux.zip && unzip /tmp/findomain.zip -d /usr/local/bin && rm /tmp/findomain.zip && chmod +x /usr/local/bin/findomain && \
     wget -O /usr/local/bin/gitdumper.sh https://raw.githubusercontent.com/internetwache/GitTools/master/Dumper/gitdumper.sh && chmod +x /usr/local/bin/gitdumper.sh && \
     wget -O /usr/local/bin/extractor.sh https://raw.githubusercontent.com/internetwache/GitTools/master/Extractor/extractor.sh && chmod +x /usr/local/bin/extractor.sh && \
