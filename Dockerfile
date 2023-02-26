@@ -154,7 +154,7 @@ RUN pipx install updog && \
     pipx install search-that-hash && \
     pipx install pwntools && \
     pipx install pyftpdlib && \
-    pipx install git+https://github.com/Tib3rius/AutoRecon.git && \
+    pipx install git+https://github.com/Tib3rius/AutoRecon.git
 
 # Tools not installed by default
 # https://github.com/zardus/ctf-tools.git   # ctf tools
