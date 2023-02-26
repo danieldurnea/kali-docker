@@ -63,15 +63,6 @@ RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/nmap && \
         -C /usr/share/seclists/Passwords/Leaked-Databases/ && \
     git clone https://github.com/wolfcw/libfaketime /tmp/libfaketime && make -C /tmp/libfaketime/src install && rm -rf /tmp/libfaketime
 
-# install python packages
-USER kali
-RUN pipx install updog && \
-    pipx install search-that-hash && \
-    pipx install pwntools && \
-    pipx install pyftpdlib && \
-    pipx install git+https://github.com/Tib3rius/AutoRecon.git && \
-USER root
-
 # TODO Remove/check later
 # pipx install ciphey && \
 # pipx install git+https://github.com/calebstewart/paramiko && \
@@ -156,6 +147,14 @@ RUN mkdir -p /usr/local/bin && \
     apt -y autoclean && apt -y autoremove && apt -y clean
 
 WORKDIR /home/kali
+
+# install python packages
+USER kali
+RUN pipx install updog && \
+    pipx install search-that-hash && \
+    pipx install pwntools && \
+    pipx install pyftpdlib && \
+    pipx install git+https://github.com/Tib3rius/AutoRecon.git && \
 
 # Tools not installed by default
 # https://github.com/zardus/ctf-tools.git   # ctf tools
