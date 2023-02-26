@@ -70,12 +70,13 @@ RUN pipx install updog && \
     pipx install pwntools && \
     pipx install pyftpdlib && \
     pipx install git+https://github.com/Tib3rius/AutoRecon.git && \
-    pipx install git+https://github.com/calebstewart/paramiko && \
-    pipx install ciphey && \
-    pipx install pyopenssl
 USER root
 
-# TODO Remove later
+# TODO Remove/check later
+# pipx install ciphey && \
+# pipx install git+https://github.com/calebstewart/paramiko && \
+# pipx install pyopenssl
+
 # RUN python3 -m pip install updog search-that-hash pwntools pyftpdlib virtualenv && \
 #     python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git && \
 #     python3 -m pip install git+https://github.com/calebstewart/paramiko && \
