@@ -18,7 +18,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     # shells
     zsh zsh-autosuggestions zsh-syntax-highlighting bash-completion \
     # programming
-    python3 python3-pip python2 cargo python3-dev default-jdk npm golang shfmt shellcheck php \
+    python3 python3-pip python2 cargo python3-dev default-jdk npm golang shfmt shellcheck php pipx \
     python-is-python3 \
     # recon / web
     gobuster dirb dirbuster nikto whatweb wkhtmltopdf burpsuite zaproxy ffuf \
@@ -64,12 +64,26 @@ RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/nmap && \
     git clone https://github.com/wolfcw/libfaketime /tmp/libfaketime && make -C /tmp/libfaketime/src install && rm -rf /tmp/libfaketime
 
 # install python packages
-RUN python3 -m pip install updog search-that-hash pwntools pyftpdlib virtualenv && \
-    python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git && \
-    python3 -m pip install git+https://github.com/calebstewart/paramiko && \
-    # python3 -m pip install ciphey --upgrade && \
-    wget -O /tmp/get-pip.py "https://bootstrap.pypa.io/pip/2.7/get-pip.py" && python2 /tmp/get-pip.py && rm /tmp/get-pip.py && \
-    python3 -m pip install -U pyopenssl
+USER kali
+RUN pipx install updog && \
+    pipx install search-that-hash && \
+    pipx install pwntools && \
+    pipx install pyftpdlib && \
+    pipx install git+https://github.com/Tib3rius/AutoRecon.git && \
+    pipx install git+https://github.com/calebstewart/paramiko && \
+    pipx install ciphey && \
+    pipx install pyopenssl
+USER root
+
+# TODO Remove later
+# RUN python3 -m pip install updog search-that-hash pwntools pyftpdlib virtualenv && \
+#     python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git && \
+#     python3 -m pip install git+https://github.com/calebstewart/paramiko && \
+#     # python3 -m pip install ciphey --upgrade && \
+#     wget -O /tmp/get-pip.py "https://bootstrap.pypa.io/pip/2.7/get-pip.py" && python2 /tmp/get-pip.py && rm /tmp/get-pip.py && \
+#     python3 -m pip install -U pyopenssl
+
+RUN wget -O /tmp/get-pip.py "https://bootstrap.pypa.io/pip/2.7/get-pip.py" && python2 /tmp/get-pip.py && rm /tmp/get-pip.py
 
 # clone usefull repos
 RUN mkdir -p /opt/repos && \
@@ -147,8 +161,3 @@ WORKDIR /home/kali
 # https://github.com/noraj/haiti            # hashidentifier
 # Nessus
 # mariadb-client # currently broken
-
-# check version
-# wget -O /tmp/nuclei.zip "$(curl -s https://api.github.com/repos/projectdiscovery/nuclei/releases/latest | jq -r '.assets[].browser_download_url' | grep 'nuclei_.*_linux_amd64')" && unzip /tmp/nuclei.zip -d /usr/local/bin && rm /tmp/nuclei.zip && \
-# gem install evil-winrm && \
-# RUN python3 -m pip install name-that-hash && \
