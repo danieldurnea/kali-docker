@@ -19,7 +19,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     zsh zsh-autosuggestions zsh-syntax-highlighting bash-completion \
     # programming
     python3 python3-pip python2 cargo python3-dev default-jdk npm golang shfmt shellcheck php pipx \
-    python-is-python3 \
+    python-is-python3 python3-neovim \
     # recon / web
     gobuster dirb dirbuster nikto whatweb wkhtmltopdf burpsuite zaproxy ffuf \
     nmap wfuzz finalrecon sqlmap wpscan sslscan smtp-user-enum feroxbuster \
@@ -41,7 +41,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     smbmap responder impacket-scripts bloodhound rlwrap evil-winrm nbtscan windows-binaries \
     # other
     remmina remmina-plugin-rdp remmina-plugin-vnc firefox-esr seclists wordlists grc ranger \
-    xclip fzf ripgrep cewl jq redis-tools default-mysql-server freerdp2-x11 okular \
+    xclip fzf ripgrep cewl jq redis-tools default-mysql-server freerdp2-x11 okular redeye \
     # TODO check
     swaks libssl-dev libffi-dev tnscmd10g \
     onesixtyone && \ 
@@ -134,13 +134,13 @@ RUN mkdir -p /opt/external && \
 # other tools
 RUN mkdir -p /usr/local/bin && \
     wget -O /tmp/rustscan.deb "$(curl -s https://api.github.com/repos/RustScan/RustScan/releases/tags/2.0.1 | jq -r '.assets[].browser_download_url' | grep 'rustscan_.*_amd64')" && apt install /tmp/rustscan.deb && rm /tmp/rustscan.deb && \
-    wget -O /tmp/nvim.deb "$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | jq -r '.assets[].browser_download_url' | grep -E 'nvim-linux64.deb$')" && apt install /tmp/nvim.deb && rm /tmp/nvim.deb && \
     wget -O /tmp/findomain.zip https://github.com/Edu4rdSHL/findomain/releases/latest/download/findomain-linux.zip && unzip /tmp/findomain.zip -d /usr/local/bin && rm /tmp/findomain.zip && chmod +x /usr/local/bin/findomain && \
     wget -O /usr/local/bin/gitdumper.sh https://raw.githubusercontent.com/internetwache/GitTools/master/Dumper/gitdumper.sh && chmod +x /usr/local/bin/gitdumper.sh && \
     wget -O /usr/local/bin/extractor.sh https://raw.githubusercontent.com/internetwache/GitTools/master/Extractor/extractor.sh && chmod +x /usr/local/bin/extractor.sh && \
     wget -O /usr/local/bin/gitfinder.py https://raw.githubusercontent.com/internetwache/GitTools/master/Finder/gitfinder.py && chmod +x /usr/local/bin/gitfinder.py && \
     wget -O /usr/local/bin/enum4linux-ng.py https://raw.githubusercontent.com/cddmp/enum4linux-ng/master/enum4linux-ng.py && chmod +x /usr/local/bin/enum4linux-ng.py && \
     wget -O /usr/local/bin/kerbrute "$(curl -s https://api.github.com/repos/ropnop/kerbrute/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux_amd64')" && chmod +x /usr/local/bin/kerbrute && \
+    wget -O /usr/local/bin/nvim https://github.com/neovim/neovim/releases/latest/download/nvim.appimage && chmod +x /usr/local/bin/nvim && \
     npm install -g yarn && \
     git clone https://github.com/pwndbg/pwndbg /home/kali/.pwndbg && cd /home/kali/.pwndbg && /home/kali/.pwndbg/setup.sh && echo "source /home/kali/.pwndbg/gdbinit.py" >> /home/kali/.gdbinit && \
     chown -R kali:kali /home/kali /usr/share/zaproxy && \
