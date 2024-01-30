@@ -40,7 +40,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     crackmapexec python3-impacket enum4linux passing-the-hash samba smbclient \
     smbmap responder impacket-scripts bloodhound rlwrap evil-winrm nbtscan windows-binaries \
     # other
-    remmina remmina-plugin-rdp remmina-plugin-vnc firefox-esr seclists wordlists grc ranger \
+    firefox-esr seclists wordlists grc ranger \
     xclip fzf ripgrep cewl jq redis-tools default-mysql-server freerdp2-x11 okular redeye \
     # TODO check
     swaks libssl-dev libffi-dev tnscmd10g \
@@ -142,7 +142,8 @@ RUN mkdir -p /usr/local/bin && \
     wget -O /usr/local/bin/kerbrute "$(curl -s https://api.github.com/repos/ropnop/kerbrute/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux_amd64')" && chmod +x /usr/local/bin/kerbrute && \
     wget -O /usr/local/bin/nvim https://github.com/neovim/neovim/releases/latest/download/nvim.appimage && chmod +x /usr/local/bin/nvim && \
     npm install -g yarn && \
-    git clone https://github.com/pwndbg/pwndbg /home/kali/.pwndbg && cd /home/kali/.pwndbg && /home/kali/.pwndbg/setup.sh && echo "source /home/kali/.pwndbg/gdbinit.py" >> /home/kali/.gdbinit && \
+    git clone https://github.com/pwndbg/pwndbg /home/kali/.pwndbg && cd /home/kali/.pwndbg && \ 
+    echo "source /home/kali/.pwndbg/gdbinit.py" >> /home/kali/.gdbinit && \
     chown -R kali:kali /home/kali /usr/share/zaproxy && \
     apt -y autoclean && apt -y autoremove && apt -y clean
 
@@ -161,3 +162,4 @@ RUN pipx install updog && \
 # https://github.com/noraj/haiti            # hashidentifier
 # Nessus
 # mariadb-client # currently broken
+# remmina remmina-plugin-rdp remmina-plugin-vnc # removed in 2024
