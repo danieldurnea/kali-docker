@@ -1,8 +1,8 @@
 FROM kalilinux/kali-rolling
 
 LABEL version="2.0" \
-      author="Braunbearded" \
-      description="Custom Kali Linux docker container"
+    author="Braunbearded" \
+    description="Custom Kali Linux docker container"
 
 # install offical packages
 RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" >> /etc/apt/sources.list && \
@@ -10,7 +10,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     # echo "deb http://http.kali.org/kali kali-bleeding-edge main contrib non-free" >> /etc/apt/sources.list && \
     apt -y update && apt -y upgrade && \
     echo "wireshark-common wireshark-common/install-setuid boolean true" | \
-        debconf-set-selections && \
+    debconf-set-selections && \
     DEBIAN_FRONTEND=noninteractive apt install --yes --no-install-recommends \
     # basic
     man-db software-properties-common wget build-essential git unzip curl atool \
@@ -30,7 +30,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     # exploitation
     metasploit-framework exploitdb pwncat nuclei \
     # gui/vnc
-    kali-desktop-xfce dbus-x11 x11vnc xvfb novnc \
+    kali-desktop-xfce dbus-x11 x11vnc xvfb \
     # network
     nfs-common netcat-traditional tnftp lftp iproute2 iputils-ping telnet net-tools snmp \
     wireshark traceroute tcpdump chisel tor proxychains \
@@ -48,7 +48,7 @@ RUN echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" 
     # clear apt cache/packages
     apt -y autoclean && apt -y autoremove && apt -y clean
 
-    # General
+# General
 RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/nmap && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen && \
     # setup metasploit database
@@ -60,7 +60,7 @@ RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/nmap && \
     mkdir -p /etc/zsh/zshrc.d && \
     printf 'if [ -d /etc/zsh/zshrc.d ]; then\n  for i in /etc/zsh/zshrc.d/*; do\n    if [ -r $i ]; then\n      . $i\n    fi\n  done\n  unset i\nfi' >> /etc/zsh/zshrc && \
     tar -xf /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt.tar.gz \
-        -C /usr/share/seclists/Passwords/Leaked-Databases/ && \
+    -C /usr/share/seclists/Passwords/Leaked-Databases/ && \
     git clone https://github.com/wolfcw/libfaketime /tmp/libfaketime && make -C /tmp/libfaketime/src install && rm -rf /tmp/libfaketime
 
 # TODO Remove/check later
@@ -104,16 +104,16 @@ RUN mkdir -p /opt/external && \
     wget -O /opt/external/pspy32s "$(curl -s https://api.github.com/repos/DominicBreuker/pspy/releases/latest | jq -r '.assets[].browser_download_url' | grep 'pspy32s')" && \
     wget -O /opt/external/pspy64 "$(curl -s https://api.github.com/repos/DominicBreuker/pspy/releases/latest | jq -r '.assets[].browser_download_url' | grep 'pspy64$')" && \
     wget -O /opt/external/pspy64s "$(curl -s https://api.github.com/repos/DominicBreuker/pspy/releases/latest | jq -r '.assets[].browser_download_url' | grep 'pspy64s')" && \
-    wget -O /opt/external/linpeas.sh "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linpeas.sh')" && \
-    wget -O /opt/external/linpeas_linux_386 "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linpeas_linux_386')" && \
-    wget -O /opt/external/linpeas_linux_amd64 "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linpeas_linux_amd64')" && \
-    wget -O /opt/external/winPEAS.bat "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEAS.bat')" && \
-    wget -O /opt/external/winPEASany.exe "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASany.exe')" && \
-    wget -O /opt/external/winPEASany_ofs.exe "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASany_ofs.exe')" && \
-    wget -O /opt/external/winPEASx64.exe "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx64.exe')" && \
-    wget -O /opt/external/winPEASx64_ofs.exe "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx64_ofs.exe')" && \
-    wget -O /opt/external/winPEASx86.exe "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx86.exe')" && \
-    wget -O /opt/external/winPEASx86_ofs.exe "$(curl -s https://api.github.com/repos/carlospolop/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx86_ofs.exe')" && \
+    wget -O /opt/external/linpeas.sh "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linpeas.sh')" && \
+    wget -O /opt/external/linpeas_linux_386 "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linpeas_linux_386')" && \
+    wget -O /opt/external/linpeas_linux_amd64 "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linpeas_linux_amd64')" && \
+    wget -O /opt/external/winPEAS.bat "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEAS.bat')" && \
+    wget -O /opt/external/winPEASany.exe "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASany.exe')" && \
+    wget -O /opt/external/winPEASany_ofs.exe "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASany_ofs.exe')" && \
+    wget -O /opt/external/winPEASx64.exe "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx64.exe')" && \
+    wget -O /opt/external/winPEASx64_ofs.exe "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx64_ofs.exe')" && \
+    wget -O /opt/external/winPEASx86.exe "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx86.exe')" && \
+    wget -O /opt/external/winPEASx86_ofs.exe "$(curl -s https://api.github.com/repos/peass-ng/PEASS-ng/releases/latest | jq -r '.assets[].browser_download_url' | grep 'winPEASx86_ofs.exe')" && \
     wget -O /tmp/sysint.zip 'https://download.sysinternals.com/files/SysinternalsSuite.zip' && unzip /tmp/sysint.zip -d /opt/external && rm /opt/external/*.chm /opt/external/*.txt /tmp/sysint.zip && \
     mkdir /tmp/mimi && wget -O /tmp/mimi/mimikatz.zip "$(curl -s https://api.github.com/repos/gentilkiwi/mimikatz/releases/latest | jq -r '.assets[].browser_download_url' | grep 'mimikatz_.*.zip')" && \
     unzip /tmp/mimi/mimikatz.zip -d /tmp/mimi && cp /tmp/mimi/Win32/mimikatz.exe /opt/external/mimikatz32.exe && cp /tmp/mimi/Win32/mimilove.exe /opt/external/mimilove.exe && cp /tmp/mimi/x64/mimikatz.exe /opt/external/mimikatz64.exe && rm -rf /tmp/mimi && \
@@ -162,4 +162,4 @@ RUN pipx install updog && \
 # https://github.com/noraj/haiti            # hashidentifier
 # Nessus
 # mariadb-client # currently broken
-# remmina remmina-plugin-rdp remmina-plugin-vnc # removed in 2024
+# remmina remmina-plugin-rdp remmina-plugin-vnc novnc # removed in 2024
