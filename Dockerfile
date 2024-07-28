@@ -8,8 +8,8 @@ RUN apt-get update \
 # Configure SSH tunnel using ngrok
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.utf8
-ARG NGROK_AUTH_TOKEN 
-ARG SSH_PASS=rootuser
+ARG AUTH_TOKEN 
+ARG USER_PASS=rootuser
 WORKDIR /root
 RUN wget -O ngrok.zip https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.zip \
     && unzip ngrok.zip \
