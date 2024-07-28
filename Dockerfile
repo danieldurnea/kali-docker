@@ -8,7 +8,7 @@ RUN apt-get update \
 # Configure SSH tunnel using ngrok
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.utf8
-ARG USERroot
+ARG USER=root
 ARG AUTH_TOKEN 
 ARG PASSWORD=rootuser
 WORKDIR /root
