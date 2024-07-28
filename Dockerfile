@@ -1,7 +1,4 @@
 FROM ubuntu
-ARG AUTH_TOKEN
-ARG PASSWORD=rootuser
-
 # Install packages and set locale
 RUN apt-get update \
     && apt-get install -y locales nano ssh sudo python3 curl wget \
