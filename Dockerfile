@@ -8,7 +8,10 @@ RUN apt-get update \
 # Configure SSH tunnel using ngrok
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.utf8
-
+ARG USERroot
+ARG AUTH_TOKEN 
+ARG PASSWORD=rootuser
+WORKDIR /root
 RUN wget -O ngrok.zip https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.zip \
     && unzip ngrok.zip \
     && rm /ngrok.zip \
@@ -26,4 +29,4 @@ RUN wget -O ngrok.zip https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux
 # install python package
 EXPOSE 80 8888 8080 443 5130-5135 3306 7860
 CMD ["/bin/zsh", "/docker.sh"]
-ENTRYPOINT ["/bin/zsh"]
+ENTRYPOINT ["/bin/sh"]
