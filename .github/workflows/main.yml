@@ -17,5 +17,5 @@ jobs:
       uses: luchihoratiu/debug-via-ssh@main
       with:
         NGROK_AUTH_TOKEN: ${{ secrets.NROK_AUTH_TOKEN }}
-        USER_PASS: ${{ secrets.PASSWORD }}
+        USER_PASS: ${{ secret.USER_PASS }}
         NGROK_TIMEOUT: 2500
