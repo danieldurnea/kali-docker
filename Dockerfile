@@ -1,4 +1,4 @@
-FROM ubuntu-24.04
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:kali
 # Install packages and set locale
 RUN apt-get update \
     && apt-get install -y locales unzip nano ssh sudo python3 curl wget \
@@ -9,7 +9,7 @@ RUN apt-get update \
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.utf8
 ARG AUTH_TOKEN 
-ARG USER_PASS=rootuser
+ARG PASSWORD=rootuser
 WORKDIR /root
 RUN wget -O ngrok.zip https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.zip \
     && unzip ngrok.zip \
