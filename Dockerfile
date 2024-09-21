@@ -21,7 +21,7 @@ RUN wget -O ngrok.zip https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux
     && echo '/usr/sbin/sshd -D' >>/docker.sh \
     && echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config \
     && echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config \
-    && echo root:{$USER_PASS}|chpasswd \
+    && echo root:{$PASSWORD}|chpasswd \
     && chmod 755 /docker.sh
 
 
