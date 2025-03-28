@@ -13,23 +13,7 @@ jobs:
     - uses: actions/checkout@v4
 #    - name: If failed, means ok
 #      run: ./not-exist-file.sh it bloke build
-    - name: Preparando el sistema linux.
-      run: sudo apt-get update
-    - name: Instalando el sistema linux.
-    #  if: ${{ failure() }}
-      env:
-        LINUX_USER_PASSWORD: ${{ secrets.LINUX_USER_PASSWORD }}
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        CHROME_HEADLESS_CODE: ${{ secrets.CHROME_HEADLESS_CODE }}
-        LINUX_MACHINE_NAME: ${{ secrets.LINUX_MACHINE_NAME }}
-        LINUX_USERNAME: ${{ secrets.LINUX_USERNAME }}
-        GIT_NAME: ${{ secrets.GIT_NAME }}
-        GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
-        
-    - name: Configurar github.
-    # if ${{ failure() }}
-      run: git config --global user.email "${{ secrets.GIT_EMAIL }}" && git config --global user.name "${{ secrets.GIT_NAME }}"
-           
-    - name: Seguir corriendo el sistema linux y dejalo por 6 horas.
-     # if: ${{ failure() }}
-      run: sleep 6h
+    - name: ngrok is now listening to VNC connections on...
+      run: curl --silent http://127.0.0.1:4040/api/tunnels | jq '.tunnels[0].public_url'
+    - name: Setup tmate Session
+      uses: mxschmitt/action-tmate@v4
