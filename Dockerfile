@@ -23,7 +23,7 @@ ENV NGROK_AUTH_TOKEN=$NGROK_AUTH_TOKEN}
 ENV NGROK_TIMEOUT=$NGROK_TIMEOUT}
 
 # Install packages and set locale
-s
+
 
 RUN service ssh start
 RUN chmod 755 kali.sh
