@@ -1,17 +1,19 @@
-name: Linux-VPS
-on: 
+name: 'Run SSH4Me'
+on:
   workflow_dispatch:
-defaults:
-  run:
-    shell: bash
-    
-    
+
 jobs:
-  build:
-    runs-on: ubuntu-24.04
+  build-and-run:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-#    - name: If failed, means ok
-#      run: ./not-exist-file.sh it bloke build
-    - name: Setup tmate Session
-      uses: mxschmitt/action-tmate@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run SSH4Me Action
+        uses: Jisan09/SSH4Me@main
+        env:
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+ 
