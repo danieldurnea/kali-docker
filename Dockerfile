@@ -13,6 +13,8 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" > /e
 
 WORKDIR /root
 
+RUN curl -s http://localhost:4040/api/tunnels | grep -o '"public_url":"[^"]*' | sed 's/"public_url":"//'
+
 
 RUN DEBIAN_FRONTEND=noninteractive    
 ARG NGROK_AUTH_TOKEN
